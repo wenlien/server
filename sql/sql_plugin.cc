@@ -4321,7 +4321,7 @@ void wsrep_plugins_post_init()
 
   while ((thd= it++))
   {
-    if (IF_WSREP(thd->wsrep_applier,1))
+    if (IF_WSREP(!thd->wsrep_applier,1))
     {
       plugin_thdvar_init(thd);
     }

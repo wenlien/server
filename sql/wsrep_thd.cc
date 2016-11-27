@@ -418,6 +418,7 @@ void wsrep_create_appliers(long threads)
 
   long wsrep_threads=0;
   while (wsrep_threads++ < threads) {
+    WSREP_WARN("Create applier thread %d \n \n \n \n \n", wsrep_threads);
     if (create_wsrep_THD(wsrep_replication_process))
       WSREP_WARN("Can't create thread to manage wsrep replication");
   }

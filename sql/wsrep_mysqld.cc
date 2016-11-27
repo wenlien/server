@@ -1263,6 +1263,15 @@ int wsrep_to_buf_helper(
   }
 #endif /* GTID_SUPPORT */
 
+  rpl_gtid gtid;
+  if(mysql_bin_log.lookup_domain_in_binlog_state(thd->variables.gtid_domain_id,
+                                                &gtid))
+  {
+    Gtid_log_event gtid_event(thd, gtid.seq_no, gtid.domain_id, true,
+                                  0, true,0);
+     writer.write(&gtid_event);
+  }
+
   /* if there is prepare query, add event for it */
   if (!ret && thd->wsrep_TOI_pre_query)
   {

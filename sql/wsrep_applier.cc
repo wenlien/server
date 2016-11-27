@@ -189,20 +189,20 @@ static wsrep_cb_status_t wsrep_apply_events(THD*        thd,
       DBUG_RETURN(WSREP_CB_FAILURE);
     }
 
-    if (typ == GTID_EVENT /*&& thd->variables.gtid_server*/)
-    {
-      rpl_gtid gtid;
-      if (mysql_bin_log.lookup_domain_in_binlog_state(
-            thd->variables.gtid_domain_id, &gtid))
-      {
-        //DBUG_ASSERT(gtid.seq_no >= thd->variables.gtid_seq_no);
-        if (gtid.seq_no > thd->variables.gtid_seq_no)
-          thd->variables.gtid_seq_no= gtid.seq_no;
-      }
-      ++thd->variables.gtid_seq_no;
-      if(mysql_bin_log.write_gtid_event(thd, true, true, 0))
-        DBUG_RETURN(WSREP_CB_FAILURE);
-    }
+//    if (typ == GTID_EVENT /*&& thd->variables.gtid_server*/)
+//    {
+//      rpl_gtid gtid;
+//      if (mysql_bin_log.lookup_domain_in_binlog_state(
+//            thd->variables.gtid_domain_id, &gtid))
+//      {
+//        //DBUG_ASSERT(gtid.seq_no >= thd->variables.gtid_seq_no);
+//        if (gtid.seq_no > thd->variables.gtid_seq_no)
+//          thd->variables.gtid_seq_no= gtid.seq_no;
+//      }
+//      ++thd->variables.gtid_seq_no;
+//      if(mysql_bin_log.write_gtid_event(thd, true, true, 0))
+//        DBUG_RETURN(WSREP_CB_FAILURE);
+//    }
     delete_or_keep_event_post_apply(thd->wsrep_rgi, typ, ev);
   }
 

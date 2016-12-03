@@ -212,6 +212,7 @@ class String;
 #define ANNOTATE_ROWS_HEADER_LEN  0
 #define BINLOG_CHECKPOINT_HEADER_LEN 4
 #define GTID_HEADER_LEN       19
+#define GTID_CHANGE_HEADER_LEN 19
 #define GTID_LIST_HEADER_LEN   4
 #define START_ENCRYPTION_HEADER_LEN 0
 
@@ -692,6 +693,7 @@ enum Log_event_type
 
   START_ENCRYPTION_EVENT= 164,
 
+  GTID_CHANGE_EVENT= 165,
   /* Add new MariaDB events here - right above this comment!  */
 
   ENUM_END_EVENT /* end marker */
@@ -3240,6 +3242,40 @@ public:
 #endif
 };
 
+/**
+  @class Gtid_change_log_event
+  Gtid_change_log_event is sent when there is bump in seq_no or,
+  Gtid_domain_id is changed.
+
+  The Body of Gtid_change_log_event is empty. The total event size is 16 bytes +
+  the normal 19 bytes common-header.
+*/
+
+class Gtid_change_log_event: public Log_event
+{
+public:
+  uint64 seq_no_bump;
+  uint32 domain_id;
+  uint32 server_no;
+#ifdef MYSQL_SERVER
+  Gtid_change_log_event(THD *thd_arg, uint64 seq_no, uint32 domain_id);
+#ifdef HAVE_REPLICATION
+  void pack_info(Protocol *protocol);
+  virtual int do_apply_event(rpl_group_info *rgi);
+#endif
+#endif
+
+  ~Gtid_change_log_event() { }
+  Log_event_type get_type_code() { return GTID_CHANGE_EVENT; }
+  int get_data_size()
+  {
+    return GTID_CHANGE_HEADER_LEN;
+  }
+  bool is_valid() const { return seq_no_bump != 0; }
+#ifdef MYSQL_SERVER
+  bool write();
+#endif
+};
 
 /**
   @class Gtid_list_log_event

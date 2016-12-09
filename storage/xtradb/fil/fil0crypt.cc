@@ -951,6 +951,8 @@ fil_space_verify_crypt_checksum(
 	ulint		zip_size)  	/*!< in: compressed size if
 					row_format compressed */
 {
+	ulint page_size = zip_size ? zip_size : UNIV_PAGE_SIZE;
+
 	// key version
 	uint key_version = mach_read_from_4(
 		src_frame + FIL_PAGE_FILE_FLUSH_LSN_OR_KEY_VERSION);
@@ -972,7 +974,7 @@ fil_space_verify_crypt_checksum(
 		src_frame + FIL_PAGE_SPACE_OR_CHKSUM);
 
 	ib_uint32_t checksum_field2 = mach_read_from_4(
-		src_frame + UNIV_PAGE_SIZE - FIL_PAGE_END_LSN_OLD_CHKSUM);
+		src_frame + page_size - FIL_PAGE_END_LSN_OLD_CHKSUM);
 
 	/** prepare frame for usage of normal checksum routines */
 	mach_write_to_4(const_cast<byte*>(src_frame) + FIL_PAGE_SPACE_OR_CHKSUM,
@@ -993,7 +995,7 @@ fil_space_verify_crypt_checksum(
 		*/
 		srv_checksum_algorithm = SRV_CHECKSUM_ALGORITHM_INNODB;
 		mach_write_to_4(const_cast<byte*>(src_frame) +
-				UNIV_PAGE_SIZE - FIL_PAGE_END_LSN_OLD_CHKSUM,
+				page_size - FIL_PAGE_END_LSN_OLD_CHKSUM,
 				BUF_NO_CHECKSUM_MAGIC);
 	}
 
@@ -1008,7 +1010,7 @@ fil_space_verify_crypt_checksum(
 			stored_pre_encryption);
 
 	mach_write_to_4(const_cast<byte*>(src_frame) +
-			UNIV_PAGE_SIZE - FIL_PAGE_END_LSN_OLD_CHKSUM,
+			page_size - FIL_PAGE_END_LSN_OLD_CHKSUM,
 			checksum_field2);
 
 	if (!corrupted) {

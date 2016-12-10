@@ -27,7 +27,7 @@ select * from performance_schema.setup_objects
   order by object_type, object_schema, object_name;
 
 --error ER_NO_REFERENCED_ROW_2
-insert into performance_schema.setup_objects
+insert ignore into performance_schema.setup_objects
   set object_type='ILLEGAL', object_schema='FOO', object_name='BAR',
   enabled='YES', timed='YES';
 

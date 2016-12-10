@@ -50,7 +50,7 @@ insert into performance_schema.setup_objects
 # Also test insert of invalid enum values
 
 --error ER_NO_REFERENCED_ROW_2
-insert into performance_schema.setup_objects
+insert ignore into performance_schema.setup_objects
   values ('SOMETHING', 'bad1', 'bad1', 'YES', 'NO');
 show warnings;
 

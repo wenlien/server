@@ -570,7 +570,9 @@ drop table t1;
 #
 create table t1 (s1 varchar(50) character set ucs2);
 insert into t1 values (0xdf84);
+SET sql_mode = 'NO_ENGINE_SUBSTITUTION';
 alter table t1 modify column s1 varchar(50) character set utf16;
+SET sql_mode = DEFAULT;
 select hex(s1) from t1;
 drop table t1;
 #

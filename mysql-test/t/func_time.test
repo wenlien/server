@@ -203,7 +203,7 @@ drop table t1;
 create table t1 (id int);
 create table t2 (id int, date date);
 insert into t1 values (1);
-insert into t2 values (1, "0000-00-00");
+insert ignore into t2 values (1, "0000-00-00");
 insert into t1 values (2);
 insert into t2 values (2, "2000-01-01");
 select monthname(date) from t1 inner join t2 on t1.id = t2.id;
@@ -225,7 +225,7 @@ drop table t1;
 #
 
 create table t1 (d date, dt datetime, t timestamp, c char(10));
-insert into t1 values ("0000-00-00", "0000-00-00", "0000-00-00", "0000-00-00");
+insert ignore into t1 values ("0000-00-00", "0000-00-00", "0000-00-00", "0000-00-00");
 select dayofyear("0000-00-00"),dayofyear(d),dayofyear(dt),dayofyear(t),dayofyear(c) from t1;
 select dayofmonth("0000-00-00"),dayofmonth(d),dayofmonth(dt),dayofmonth(t),dayofmonth(c) from t1;
 select month("0000-00-00"),month(d),month(dt),month(t),month(c) from t1;
@@ -244,7 +244,9 @@ drop table t1;
 
 CREATE TABLE t1 ( start datetime default NULL);
 INSERT INTO t1 VALUES ('2002-10-21 00:00:00'),('2002-10-28 00:00:00'),('2002-11-04 00:00:00');
+SET sql_mode = 'NO_ENGINE_SUBSTITUTION';
 CREATE TABLE t2 ( ctime1 timestamp NOT NULL, ctime2 timestamp NOT NULL);
+SET sql_mode = DEFAULT;
 INSERT INTO t2 VALUES (20021029165106,20021105164731);
 CREATE TABLE t3 (ctime1 char(19) NOT NULL, ctime2 char(19) NOT NULL);
 INSERT INTO t3 VALUES ("2002-10-29 16:51:06","2002-11-05 16:47:31");
@@ -531,7 +533,7 @@ SELECT EXTRACT(HOUR FROM '10000:02:03');
 # check if we get proper warnings if both input string truncation
 # and out-of-range value occur
 CREATE TABLE t1(f1 TIME);
-INSERT INTO t1 VALUES('916:00:00 a');
+INSERT IGNORE INTO t1 VALUES('916:00:00 a');
 SELECT * FROM t1;
 DROP TABLE t1;
 

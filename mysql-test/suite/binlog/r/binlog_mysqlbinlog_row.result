@@ -2704,8 +2704,6 @@ BEGIN
 #Q> DELETE FROM t1 WHERE c44>'a'
 #010909  4:46:40 server id 1  end_log_pos # CRC32 XXX 	Table_map: `test`.`t1` mapped to number #
 # at #
-# at #
-#010909  4:46:40 server id 1  end_log_pos # CRC32 XXX 	Delete_rows: table id #
 #010909  4:46:40 server id 1  end_log_pos # CRC32 XXX 	Delete_rows: table id # flags: STMT_END_F
 ### DELETE FROM `test`.`t1`
 ### WHERE

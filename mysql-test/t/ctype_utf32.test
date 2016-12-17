@@ -717,9 +717,9 @@ drop table t1;
 #
 # Testing auto-conversion to TEXT
 #
-SET sql_mode = 'NO_ENGINE_SUBSTITUTION';
+set sql_mode = 'NO_ENGINE_SUBSTITUTION';
 create table t1 (a varchar(17000) character set utf32);
-SET sql_mode = DEFAULT;
+set sql_mode = default;
 show create table t1;
 drop table t1;
 
@@ -821,10 +821,10 @@ DROP TABLE t1;
 --echo #
 CREATE TABLE t1 (utf32 CHAR(5) CHARACTER SET utf32, latin1 CHAR(5) CHARACTER SET latin1);
 INSERT INTO t1 (utf32) VALUES (0xc581);
-UPDATE t1 SET latin1 = utf32;
+UPDATE IGNORE t1 SET latin1 = utf32;
 DELETE FROM t1;
 INSERT INTO t1 (utf32) VALUES (0x100cc);
-UPDATE t1 SET latin1 = utf32;
+UPDATE IGNORE t1 SET latin1 = utf32;
 DROP TABLE t1;
 
 --echo #

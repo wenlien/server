@@ -333,11 +333,13 @@ DROP TABLE t1, t2;
 # Bug#44306: Assertion fail on duplicate key error in 'INSERT ... SELECT' 
 # statements
 #
+SET sql_mode = 'NO_ENGINE_SUBSTITUTION';
 CREATE TABLE t1 ( a INT KEY, b INT );
 INSERT INTO t1 VALUES ( 0, 1 );
 --error ER_DUP_ENTRY
-INSERT IGNORE INTO t1 ( b ) SELECT MAX( b ) FROM t1 WHERE b = 2;
+INSERT INTO t1 ( b ) SELECT MAX( b ) FROM t1 WHERE b = 2;
 DROP TABLE t1;
+SET sql_mode = DEFAULT;
 
 #
 # Bug #26207: inserts don't work with shortened index

@@ -282,7 +282,7 @@ DROP TABLE t1;
 # lp:737496 Field_temporal::store_TIME_with_warning() in 5.1-micro
 #
 create table t1 (f1 date, key (f1));
-insert t1 values ('2010-10-10 15:foobar');
+insert ignore t1 values ('2010-10-10 15:foobar');
 drop table t1;
 
 --echo #

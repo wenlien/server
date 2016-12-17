@@ -307,7 +307,6 @@ CALL p2();
 --disable_warnings
 # All records marked with '[BAD]' mean that the string was unescaped
 # in a unexpected way, that means there is a bug in UNESCAPE() above.
---error ER_INVALID_CHARACTER_STRING
 SELECT HEX(a),HEX(b),
   CONCAT(unescape_type(a,b),
          wellformedness(a,b),

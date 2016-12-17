@@ -50,7 +50,7 @@ d VARCHAR(20) NOT NULL, e enum('foo','bar') NOT NULL,f DATE NOT NULL)
 ENGINE = CSV;
 -- echo # === should result in default for each datatype ===
 -- disable_warnings
-INSERT INTO t1 VALUES();
+INSERT IGNORE INTO t1 VALUES();
 -- enable_warnings
 SELECT * FROM t1;
 
